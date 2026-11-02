@@ -1,0 +1,32 @@
+
+# macOS
+.DS_Store
+**/.DS_Store
+
+# IntelliJ IDEA
+.idea/
+*.iml
+
+# React / Vite
+**/node_modules/
+**/dist/
+
+# Spring Boot / Maven
+**/target/
+*.class
+
+# Environment variables and secrets
+.env
+.env.*
+**/.env
+**/.env.*
+!.env.example
+!**/.env.example
+**/application-local.properties
+**/application-secrets.properties
+
+# Logs
+*.log
+
+# Postman global variables
+backend/postman/globals/
