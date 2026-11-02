@@ -1,83 +1,299 @@
-# ExpenseTracker – Aplikacija za spremljanje stroškov
 
-## 1. Idejna zasnova
+# ExpenseTracker
 
-ExpenseTracker je spletna aplikacija za spremljanje osebnih stroškov. Omogoča dodajanje, pregledovanje, urejanje in brisanje stroškov. Vsak strošek vsebuje naziv, znesek, kategorijo, datum in neobvezen opis.
+## 1. O projektu
 
-Trenutno je razvito zaledje z REST API-jem in podatkovno bazo H2. V prihodnje je predvidena izdelava uporabniškega vmesnika, filtriranje stroškov in grafični prikaz porabe.
+ExpenseTracker je spletna aplikacija za spremljanje osebnih stroškov.
+
+Namen aplikacije je uporabniku omogočiti enostavno
+beleženje, pregledovanje in upravljanje izdatkov.
+
+### Glavne funkcionalnosti
+
+- Dodajanje novih stroškov (CREATE)
+- Pregled vseh stroškov (READ)
+- Pregled podrobnosti posameznega stroška
+- Urejanje obstoječih stroškov (UPDATE)
+- Brisanje stroškov (DELETE)
+- Dodajanje kategorij
+- Prikaz skupnega zneska in števila stroškov
+- Iskanje stroškov po nazivu
+- Razvrščanje po datumu, znesku ali nazivu
+- Naraščajoči in padajoči vrstni red
+
+Aplikacija je sestavljena iz ločenega frontend
+in backend dela, ki komunicirata prek REST API-ja.
 
 ## 2. Uporabljene tehnologije
 
-- **Java 21 in Spring Boot** – razvoj zalednega sistema.
-- **Spring Web MVC** – REST API.
-- **Spring Data JPA in Hibernate** – delo s podatkovno bazo.
-- **H2** – podatkovna baza v pomnilniku.
-- **Maven** – gradnja projekta.
-- **Postman** – testiranje CRUD operacij.
+### Frontend
 
-## 3. Struktura zaledja
+- React 19.3.1 – knjižnica za izdelavo uporabniškega vmesnika
+- React DOM 19.3.1 – prikaz React komponent v brskalniku
+- JavaScript (JSX) – programski jezik
+- HTML5 – struktura spletne strani
+- CSS3 – oblikovanje uporabniškega vmesnika
+- Vite 8.3.4 – razvojno orodje in razvojni strežnik
+- Node.js 24.22.0 – izvajalno okolje JavaScript
+- npm 11.19.1 – upravljanje paketov
+- ESLint 10.13.0 – preverjanje kakovosti kode
 
-- **Expense** – podatkovni model stroška.
-- **ExpenseRepository** – dostop do baze.
-- **ExpenseService** – CRUD logika.
-- **ExpenseController** – obdelava HTTP zahtevkov.
+### Backend
 
-Podatki so shranjeni v pomnilniku in se ob zaustavitvi aplikacije izgubijo.
+- Java 21 – programski jezik
+- Spring Boot 4.1.1 – ogrodje za razvoj zaledne aplikacije
+- Spring Web MVC – izdelava REST API-ja
+- Spring Data JPA – dostop do podatkovne baze
+- Hibernate – preslikava Java objektov v relacijske tabele
+- Spring Validation – podpora za validacijo podatkov
+- PostgreSQL JDBC Driver – povezava s podatkovno bazo
+- Springdoc OpenAPI 3.1.1 – dokumentacija REST API-ja in Swagger UI
+- Maven – upravljanje odvisnosti in gradnja projekta
+- Spring Boot Starter Test – podpora za testiranje
 
-## 4. Zagon aplikacije
 
-V mapi `backend` zaženemo:
+### Podatkovna baza
 
-`.\mvnw.cmd spring-boot:run`
+- PostgreSQL
+- DataGrip – orodje za pregled podatkovne baze
 
-Potreben je JDK 21. API je dostopen na:
+### Razvojna orodja
 
-`http://localhost:8080/api/expenses`
+- IntelliJ IDEA
+- Git in GitHub
+- Postman / Swagger UI
 
-## 5. CRUD operacije
+Opomba: natančne različice Reacta, Vite in
+Node.js ter drugih odvisnosti preverimo v
+package.json, pom.xml in razvojnem okolju.
 
-| Metoda | Endpoint | Opis |
-|---|---|---|
-| POST | `/api/expenses` | Dodajanje stroška |
-| GET | `/api/expenses` | Pridobivanje vseh stroškov |
-| GET | `/api/expenses/{id}` | Pridobivanje enega stroška |
-| PUT | `/api/expenses/{id}` | Posodobitev stroška |
-| DELETE | `/api/expenses/{id}` | Brisanje stroška |
+## 3. Struktura projekta
 
-## 6. Testiranje sistema
+ExpenseTracker/
+|
+|-- backend/
+|   |-- src/
+|   |   |-- main/
+|   |   |   |-- java/si/feri/backend/
+|   |   |   |   |-- controller/
+|   |   |   |   |-- dto/
+|   |   |   |   |-- model/
+|   |   |   |   |-- repository/
+|   |   |   |   |-- service/
+|   |   |   |   |-- BackendApplication.java
+|   |   |   |
+|   |   |   |-- resources/
+|   |   |       |-- application.properties
+|   |   |
+|   |   |-- test/
+|   |
+|   |-- pom.xml
+|   |-- mvnw
+|
+|-- frontend/
+|   |-- src/
+|   |   |-- App.jsx
+|   |   |-- App.css
+|   |   |-- api.js
+|   |   |-- main.jsx
+|   |   |-- index.css
+|   |   |-- assets/
+|   |
+|   |-- public/
+|   |-- package.json
+|   |-- package-lock.json
+|   |-- vite.config.js
+|
+|-- .gitignore
+|-- README.md
 
-Delovanje je bilo preverjeno z orodjem Postman.
+### Opis map
 
-### 6.1 CREATE – POST
+- `controller/` – sprejemanje HTTP zahtevkov
+- `service/` – poslovna logika aplikacije
+- `repository/` – dostop do podatkovne baze
+- `model/` – podatkovni modeli oziroma entitete
+- `dto/` – objekti za prenos podatkov
+- `resources/` – konfiguracija aplikacije
+- `frontend/src/` – React komponente in logika
+- `frontend/public/` – javne statične datoteke
+- `api.js` – komunikacija z REST API-jem
 
-Dodajanje novega stroška. Status: **201 Created**.
+## 4. Navodila za nameščanje in zagon
 
-![Testiranje POST zahtevka](./screenshots/post.png)
+### Predpogoji
 
-### 6.2 READ – GET vseh stroškov
+Za zagon aplikacije potrebujemo:
 
-Pridobivanje vseh zapisov. Status: **200 OK**.
+- JDK 21
+- Node.js in npm
+- PostgreSQL
+- Git
+- IntelliJ IDEA ali drug urejevalnik kode
 
-![Testiranje GET vseh stroškov](./screenshots/getAll.png)
+### 4.1 Prenos projekta
 
-### 6.3 READ – GET posameznega stroška
+Projekt prenesemo z GitHub repozitorija:
 
-Pridobivanje stroška po ID-ju. Status: **200 OK**.
+git clone <URL_REPOZITORIJA>
 
-![Testiranje GET posameznega stroška](./screenshots/get1.png)
+Nato odpremo mapo ExpenseTracker.
 
-### 6.4 UPDATE – PUT
+### 4.2 Priprava podatkovne baze
 
-Posodobitev obstoječega stroška. Status: **200 OK**.
+V PostgreSQL ustvarimo podatkovno bazo:
 
-![Testiranje PUT zahtevka](./screenshots/put.png)
+CREATE DATABASE expensetracker;
 
-### 6.5 DELETE – DELETE
+Podatkovna baza uporablja lokalna vrata 5432.
 
-Brisanje stroška. Status: **204 No Content**.
+Backend se poveže z bazo prek JDBC povezave:
 
-![Testiranje DELETE zahtevka](./screenshots/delete.png)
+jdbc:postgresql://localhost:5432/expensetracker
 
-## 7. Zaključek
+Tabeli `expense` in `category` Hibernate ustvari
+oziroma posodobi na podlagi JPA entitet.
 
-Izdelano zaledje omogoča vse osnovne CRUD operacije prek REST API-ja. Delovanje je bilo preverjeno s Postmanom.
+### 4.3 Konfiguracija backenda
+
+V datoteki `application.properties` sta
+uporabniško ime in geslo baze nastavljena
+z okoljskima spremenljivkama:
+
+spring.datasource.username=${DB_USER}
+spring.datasource.password=${DB_PASSWORD:}
+
+Pred zagonom nastavimo okoljski spremenljivki
+DB_USER in DB_PASSWORD glede na lokalno
+namestitev PostgreSQL.
+
+Gesel in drugih skrivnih podatkov ne
+shranjujemo v GitHub repozitorij.
+
+### 4.4 Zagon backenda
+
+V Terminalu odpremo mapo backend:
+
+cd backend
+
+Na macOS ali Linux zaženemo:
+
+./mvnw spring-boot:run
+
+Backend je dostopen na:
+
+http://localhost:8080
+
+REST API:
+
+http://localhost:8080/api/expenses
+
+Swagger UI:
+
+http://localhost:8080/swagger-ui.html
+
+### 4.5 Zagon frontenda
+
+V drugem Terminalu odpremo mapo frontend:
+
+cd frontend
+
+Namestimo odvisnosti:
+
+npm install
+
+Zaženemo razvojni strežnik:
+
+npm run dev
+
+Frontend je običajno dostopen na:
+
+http://localhost:5173
+
+Če so vrata zasedena, lahko Vite uporabi
+druga vrata, na primer 5174.
+
+### 4.6 Povezava frontend in backend
+
+Frontend uporablja datoteko `api.js`,
+v kateri je določen naslov REST API-ja:
+
+http://localhost:8080/api
+
+Podatki se prenašajo z zahtevki HTTP
+(GET, POST, PUT, DELETE) v formatu JSON.
+
+Za pravilno delovanje morajo biti
+zagnani PostgreSQL, backend in frontend.
+
+## 5. Navodila za razvijalce
+
+Projekt uporablja Git za spremljanje sprememb
+in GitHub za shranjevanje izvorne kode.
+
+### Način dela
+
+1. Pridobimo zadnjo različico kode:
+
+   git pull origin main
+
+2. Ustvarimo novo vejo za funkcionalnost:
+
+   git switch -c feature/nova-funkcionalnost
+
+3. Izvedemo spremembe v kodi.
+
+4. Preverimo delovanje aplikacije.
+
+5. Pripravimo spremembe:
+
+   git add .
+
+6. Ustvarimo commit z opisom spremembe:
+
+   git commit -m "Add new feature"
+
+7. Spremembe pošljemo na GitHub:
+
+   git push -u origin feature/nova-funkcionalnost
+
+8. Na GitHubu ustvarimo Pull Request
+   za združitev sprememb v glavno vejo.
+
+### Pravila
+
+- Vsaka funkcionalnost naj ima svojo vejo.
+- Commit sporočila naj bodo kratka in jasna.
+- Pred združitvijo preverimo delovanje kode.
+- Ne objavljamo gesel, žetonov ali datotek .env.
+- Sprememb ne združujemo brez pregleda.
+
+## 6. Standardi kodiranja
+
+### Backend – Java
+
+- Razredi uporabljajo PascalCase.
+- Metode in spremenljivke uporabljajo camelCase.
+- Koda je razdeljena na Controller, Service,
+  Repository, Model in DTO sloje.
+- Imena razredov in metod naj bodo opisna.
+- Poslovno logiko pišemo v Service razrede.
+- Uporabljamo ustrezno zamikanje in oblikovanje.
+
+### Frontend – React
+
+- React komponente uporabljajo PascalCase.
+- Funkcije in spremenljivke uporabljajo camelCase.
+- Za delo s stanjem uporabljamo React Hooks.
+- Komunikacija z backendom je v datoteki api.js.
+- JSX mora biti pregleden in pravilno zamaknjen.
+- Za oblikovanje uporabljamo ločene CSS datoteke.
+
+### Splošna pravila
+
+- Koda naj bo berljiva in razumljiva.
+- Imena naj jasno opisujejo namen.
+- Izogibamo se nepotrebnemu podvajanju kode.
+- Uporabljamo Git za spremljanje sprememb.
+- Ob vsaki nadgradnji preverimo delovanje aplikacije.
+
